@@ -1,5 +1,5 @@
-import Forecast from '../models/Forecast'
-import { fetchStormGlassData } from '../services/stormGlassService'
+import Forecast from '../models/Forecast.js'
+import { fetchStormGlassData } from '../services/stormGlassService.js'
 
 export const saveForecastToMongo = async (lat, lng) => {
   try {
