@@ -1,8 +1,8 @@
-import Forecast from '../models/Forecast'
+import Forecast from '../models/Forecast.js'
 
-export const getForecastController = (req, res) => {
+export const getForecastController = async (req, res) => {
   try {
-    const forecasts = Forecast.aggregate([
+    const forecasts = await Forecast.aggregate([
       {
         $match: {
           $expr: {
