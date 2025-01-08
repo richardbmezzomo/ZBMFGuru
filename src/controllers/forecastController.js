@@ -1,52 +1,16 @@
-import Forecast from '../models/Forecast.js'
-import { fetchStormGlassData } from '../services/stormGlassService.js'
+import { saveForecastData } from '../services/forecastService.js'
 
-export const saveForecastToMongo = async (lat, lng) => {
+export const forecastController = async (req, res) => {
+  const lat = -27.4496
+  const lng = -48.3882
+
   try {
-    const data = await fetchStormGlassData(lat, lng)
-    const forecasts = data.hours
-
-    for (const forecast of forecasts) {
-      const forecastData = {
-        time: forecast.time,
-        secondarySwell: {
-          direction: forecast.secondarySwellDirection?.noaa,
-          height: forecast.secondarySwellHeight?.noaa,
-          period: forecast.secondarySwellPeriod?.noaa,
-        },
-        swell: {
-          direction: forecast.swellDirection?.noaa,
-          height: forecast.swellHeight?.noaa,
-          period: forecast.swellPeriod?.noaa,
-        },
-        wave: {
-          direction: forecast.waveDirection?.noaa,
-          height: forecast.waveHeight?.noaa,
-          period: forecast.wavePeriod?.noaa,
-        },
-        wind: {
-          direction: forecast.windDirection?.noaa,
-          speed: forecast.windSpeed?.noaa,
-          wave: {
-            direction: forecast.windWaveDirection?.noaa,
-            height: forecast.windWaveHeight?.noaa,
-            period: forecast.windWavePeriod?.noaa,
-          },
-        },
-      }
-
-      await Forecast.findOneAndUpdate(
-        { time: forecastData.time },
-        forecastData,
-        {
-          upsert: true,
-          new: true,
-        },
-      )
-    }
-
-    console.log('Dados salvos no MongoDB com sucesso!')
+    await saveForecastData(lat, lng)
+    res
+      .status(200)
+      .send('Dados da previsão salvos com sucesso no banco de dados!')
   } catch (error) {
-    console.error(`Erro ao salvar previsões no MongoDB: ${error.message}`)
+    console.error('Erro ao salvar dados da previsão:', error.message)
+    res.status(500).send('Erro ao salvar dados da previsão.')
   }
 }

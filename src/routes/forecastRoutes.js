@@ -1,8 +1,7 @@
 import express from 'express'
-import { saveForecastController } from '../controllers/saveForecastController.js'
-
+import { forecastController } from '../controllers/forecastController.js'
 const router = express.Router()
 
-router.get('/save-forecast', saveForecastController)
+router.get('/save-forecast', forecastController)
 
 export default router
