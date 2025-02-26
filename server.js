@@ -2,9 +2,12 @@ import express from 'express'
 import { connectDB } from './src/config/db.js'
 import forecastRoutes from './src/routes/forecastRoutes.js'
 import getForecasts from './src/routes/getForecasts.js'
+import cors from 'cors'
 
 const app = express()
 connectDB()
+
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.send('hello zbmf')
